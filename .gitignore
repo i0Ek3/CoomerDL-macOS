@@ -10,7 +10,7 @@ __pycache__/
 
 # Python distribution artifacts
 *.egg-info/
-build/
+build*/
 dist/
 Scripts/
 
@@ -38,9 +38,7 @@ resources/config/logs/*
 setup.py
 test/
 test.py
-test/parse.py
-app/user_panel.py
-resources/config/download_path/download_folder.json
 CLI/
+resources/config/download_path/download_folder.json
 resources/config/downloads.db
 resources/config/cookies/*

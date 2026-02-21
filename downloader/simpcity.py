@@ -21,7 +21,7 @@ class SimpCity:
         self.total_files = 0
         self.completed_files = 0
         self.download_queue = queue.Queue()
-        self.scraper = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False})
+        self.scraper = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'macos', 'mobile': False})
         self.tr = tr
 
         # Selectors from original crawler

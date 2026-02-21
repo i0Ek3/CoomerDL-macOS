@@ -1,6 +1,19 @@
-customtkinter
-beautifulsoup4
-requests
-pillow
-psutil
-cloudscraper
+# CoomerDL macOS Dependencies
+# These packages are tested and compatible with macOS
+# Requires Python 3.8+ (3.9+ recommended for best compatibility)
+#
+# IMPORTANT: tkinter is required but comes with most Python installations.
+# If you're using Homebrew Python, install tkinter separately:
+#   brew install python-tk
+# Or use the official Python installer from python.org
+
+customtkinter>=5.2.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+pillow>=10.0.0
+psutil>=5.9.0
+cloudscraper>=1.2.60
+
+# macOS-specific dependencies
+pyobjc-core>=10.0  # For macOS system integration
+pyobjc-framework-Cocoa>=10.0  # For macOS UI integration

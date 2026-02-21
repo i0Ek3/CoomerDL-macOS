@@ -1,34 +1,109 @@
-![Windows Compatibility](https://img.shields.io/badge/Windows-10%2C%2011-blue)
-![Downloads](https://img.shields.io/github/downloads/emy69/CoomerDL/total)
+# CoomerDL-macOS
 
-# Coomer Downloader App
-
-**Coomer Downloader App** is a Python-based desktop application that simplifies downloading images and videos from various URLs. With an intuitive GUI, you can paste a link and let the app handle the rest.
-
----
-
-## Support My Work
-
-If you find this tool helpful, please consider supporting my efforts:
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00.svg?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/emy_69)
-[![Support on Patreon](https://img.shields.io/badge/Support%20on%20Patreon-FF424D.svg?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/emy69)
-
+> **macOS exclusive version** of [Emy69/CoomerDL](https://github.com/Emy69/CoomerDL).
+> 
+> This version has been optimized and packaged specifically for macOS, with Windows support removed.
 
 ---
 
-## Features
+![](https://github.com/i0Ek3/CoomerDL-macOS/blob/main/resources/screenshots/main.png)
 
-### Download Images and Videos
-- **Multithreaded Downloads**: Boosts download speed by utilizing multiple threads.
-- **Progress Feedback**: Real-time progress updates during downloads.
-- **Queue Management**: Efficiently handles large download queues.
+## System Requirements
 
-**Supported File Extensions**:
-- **Videos**: `.mp4`, `.mkv`, `.webm`, `.mov`, `.avi`, `.flv`, `.wmv`, `.m4v`
-- **Images**: `.jpg`, `.jpeg`, `.png`, `.gif`, `.bmp`, `.tiff`
-- **Documents**: `.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, `.pptx`
-- **Compressed**: `.zip`, `.rar`, `.7z`, `.tar`, `.gz`
+- **macOS 10.15 (Catalina) or later**
+- **Python 3.8 or later** (for development)
+- **ARM64 (Apple Silicon) or Intel** Mac
+
+---
+
+## Installation
+
+### Option 1: Download Pre-built Application
+
+### Option 2: Build from Source
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/i0Ek3/CoomerDL-macOS.git
+   cd CoomerDL-macOS
+   ```
+
+2. Run the build script:
+   ```bash
+   ./build_macos.sh
+   ```
+
+3. Find the built application in the `dist/` directory
+
+---
+
+## Building for Development
+
+If you want to run the app from source:
+
+### Prerequisites
+
+1. **Python 3.8 or later** with tkinter support:
+   - **Recommended**: Use official Python from [python.org](https://www.python.org/downloads/macos/)
+   - **Alternative**: Install Homebrew Python with tkinter:
+     ```bash
+     brew install python-tk
+     ```
+   - **Built-in**: macOS comes with Python at `/usr/bin/python3`
+
+2. **Verify tkinter is available**:
+   ```bash
+   python3 -c "import tkinter; print('✅ tkinter available')"
+   ```
+
+### Installation Steps
+
+**Option 1: Automated Setup (Recommended)**
+
+```bash
+# Clone the repository
+git clone https://github.com/i0Ek3/CoomerDL-macOS.git
+cd CoomerDL-macOS
+
+# Run the setup script
+./setup.sh
+```
+
+**Option 2: Manual Setup**
+
+```bash
+# Clone the repository
+git clone https://github.com/i0Ek3/CoomerDL-macOS.git
+cd CoomerDL-macOS
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python3 main.py
+```
+
+### Troubleshooting
+
+If you get `ModuleNotFoundError: No module named '_tkinter'`:
+
+1. **Install tkinter support** (for Homebrew Python):
+   ```bash
+   brew install python-tk
+   ```
+
+2. **Use official Python** (recommended):
+   - Download from [python.org](https://www.python.org/downloads/macos/)
+   - The official installer includes tkinter by default
+
+3. **Use built-in macOS Python**:
+   ```bash
+   /usr/bin/python3 main.py
+   ```
 
 ---
 
@@ -41,21 +116,6 @@ If you find this tool helpful, please consider supporting my efforts:
 - [simpcity.su](https://simpcity.su/)  
 - [jpg5.su](https://jpg5.su/)  
 
----
-
-## CLI Tools
-
-If you prefer using command-line interfaces, check out the following projects:
-
-- **[Coomer CLI](https://github.com/Emy69/Coomer-cli)**  
-  A CLI tool for downloading media from Coomer and similar sites. It offers customizable options for file naming, download modes, rate limiting, checksum verification, and more.
-
-- **[Simpcity CLI](https://github.com/Emy69/SimpCityCLI)**  
-  A CLI tool specifically designed for downloading media from Simpcity. It shares many features with Coomer CLI and is tailored for the Simpcity platform.
-
----
-
-
 ## Language Support
 
 - [Español](#)  
@@ -67,48 +127,6 @@ If you prefer using command-line interfaces, check out the following projects:
 
 ---
 
-## Community
+## License
 
-Have questions or just want to say hi? Join the Discord server:
-
-[![Join Discord](https://img.shields.io/badge/Join-Discord-7289DA.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ku8gSPsesh)
-
----
-
-## Downloads
-
-- **Latest Version**: Visit the [Releases Page](https://github.com/Emy69/CoomerDL/releases) to download the newest version.
-
----
-
-## Usage
-
-1. Launch the application.
-2. Paste the URL of the image or video you want to download.
-3. Click **Download** and wait for the process to finish.
-
-![Usage GIF](https://github.com/Emy69/CoomerDL/blob/main/resources/screenshots/0627.gif)
-
----
-
-## Clone the Repository
-
-To get a local copy of the project, run the following command:
-
-```sh
-git clone https://github.com/Emy69/CoomerDL.git
-```
-### Install Dependencies
-Navigate to the project folder:
-```sh
-cd CoomerDL
-```
-Then install the required dependencies:
-```sh
-pip install -r requirements.txt
-```
-### Run the Application
-Once everything is installed, you can start the application with:
-```sh
-python main.py
-```
+MIT License

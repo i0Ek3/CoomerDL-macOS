@@ -39,7 +39,7 @@ class ProgressManager:
             self.progress_window.grab_release()
             self.progress_window.withdraw()
 
-    def update_progress(self, downloaded, total, file_id=None, file_path=None, speed=None, eta=None, status: str | None = None):
+    def update_progress(self, downloaded, total, file_id=None, file_path=None, speed=None, eta=None, status=None):
         if status is not None:
             original = self.footer_eta_label.cget("text")
             base_eta = original.split(" | ")[0]

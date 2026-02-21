@@ -1,0 +1,37 @@
+# CoomerDL macOS Build Configuration
+# This file contains build settings for macOS packaging
+# Version is dynamically loaded from version.py
+
+[build]
+app_name = "CoomerDL"
+version = "0.8.13"  # This should match version.py - build script will override
+main_script = "main.py"
+icon_file = "resources/img/icono.icns"
+
+[pyinstaller]
+# PyInstaller-specific settings
+windowed = true  # Create .app bundle
+onefile = true
+add_data = ["resources:resources"]
+hidden_imports = [
+    "PIL._tkinter_finder",
+    "customtkinter", 
+    "cloudscraper",
+    "requests",
+    "beautifulsoup4",
+    "psutil"
+]
+
+[macos]
+# macOS-specific settings
+minimum_system_version = "10.15"
+bundle_identifier = "com.coomerdl.macos"
+bundle_category = "public.app-category.utilities"
+high_resolution_capable = true
+
+[dmg]
+# DMG creation settings
+volume_name = "CoomerDL"
+include_applications_symlink = true
+window_size = "600x400"
+icon_size = 96

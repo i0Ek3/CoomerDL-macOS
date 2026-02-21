@@ -8,7 +8,7 @@ import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, scrolledtext
-from typing import Optional
+from typing import Optional, Tuple
 from urllib.parse import ParseResult, parse_qs, urlparse
 import webbrowser
 import requests
@@ -19,9 +19,7 @@ import psutil
 import functools
 import subprocess
 
-#from app.patch_notes import PatchNotes
 from app.settings_window import SettingsWindow
-#from app.user_panel import UserPanel
 from app.about_window import AboutWindow
 from downloader.bunkr import BunkrDownloader
 from downloader.downloader import Downloader
@@ -29,12 +27,12 @@ from downloader.erome import EromeDownloader
 from downloader.simpcity import SimpCity
 from downloader.jpg5 import Jpg5Downloader
 from app.progress_manager import ProgressManager
-from app.donors import DonorsModal
+from version import __version__
 
-VERSION = "V0.8.12"
+VERSION = __version__
 MAX_LOG_LINES = None
 
-def extract_ck_parameters(url: ParseResult) -> tuple[Optional[str], Optional[str], Optional[str]]:
+def extract_ck_parameters(url: ParseResult) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
     Get the service, user and post id from the url if they exist
     """
@@ -45,7 +43,7 @@ def extract_ck_parameters(url: ParseResult) -> tuple[Optional[str], Optional[str
     else:
         return None, None, None
 
-def extract_ck_query(url: ParseResult) -> tuple[Optional[str], int]:
+def extract_ck_query(url: ParseResult) -> Tuple[Optional[str], int]:
     """
     Try to obtain the query and offset from the url if they exist
     """
@@ -67,7 +65,7 @@ class ImageDownloaderApp(ctk.CTk):
         ctk.set_default_color_theme("dark-blue")
         super().__init__()
         self.version = VERSION
-        self.title(f"Downloader [{VERSION}]")
+        self.title(f"CoomerDL-macOS [{VERSION}]")
         
         # Setup window
         self.setup_window()
@@ -100,13 +98,10 @@ class ImageDownloaderApp(ctk.CTk):
         self.load_translations(lang)
         self.image_downloader = None
 
-        # Patch notes
-        #self.patch_notes = PatchNotes(self, self.tr)
-
         self.progress_bars = {}
         
         # Obtener el número de estrellas de GitHub
-        self.github_stars = self.get_github_stars("emy69", "CoomerDL")
+        self.github_stars = self.get_github_stars("i0ek3", "CoomerDL-macOS")
 
         # Cargar el icono de GitHub
         self.github_icon = self.load_github_icon()
@@ -282,8 +277,12 @@ class ImageDownloaderApp(ctk.CTk):
         center_y = int((self.winfo_screenheight() / 2) - (window_height / 2))
         self.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
         
-        if sys.platform == "win32":
-            self.iconbitmap("resources/img/window.ico")
+        # Set app icon for macOS
+        if sys.platform == "darwin":
+            try:
+                self.iconphoto(True, tk.PhotoImage(file="resources/img/icono.png"))
+            except:
+                pass  # Continue without icon if file not found
 
     # Initialize UI components
     def initialize_ui(self):
@@ -443,18 +442,13 @@ class ImageDownloaderApp(ctk.CTk):
         self.download_button.configure(text=self.tr("Descargar"))
         self.cancel_button.configure(text=self.tr("Cancelar Descarga"))
         # self.processing_label.configure(text=self.tr("Procesando videos..."))
-        self.title(self.tr(f"Downloader [{VERSION}]"))
+        self.title(self.tr(f"CoomerDL-macOS [{VERSION}]"))
         self.update_download_button.configure(text=self.tr("Download Now"))
 
     
     def open_download_folder(self, event=None):
         if self.download_folder and os.path.exists(self.download_folder):
-            if sys.platform == "win32":
-                os.startfile(self.download_folder)  # Para Windows
-            elif sys.platform == "darwin":
-                subprocess.Popen(["open", self.download_folder])  # Para macOS
-            else:
-                subprocess.Popen(["xdg-open", self.download_folder])  # Para Linux
+            subprocess.Popen(["open", self.download_folder])  # macOS only
         else:
             messagebox.showerror(self.tr("Error"), self.tr("La carpeta no existe o no es válida."))
 
@@ -505,18 +499,6 @@ class ImageDownloaderApp(ctk.CTk):
         about_button.pack(side="left")
         about_button.bind("<Button-1>", lambda e: "break")
 
-        # Botón Donors
-        donors_button = ctk.CTkButton(
-            self.menu_bar,
-            text=self.tr("Patreons"),
-            width=80,
-            fg_color="transparent",
-            hover_color="gray25",
-            command=self.show_donors_modal
-        )
-        donors_button.pack(side="left")
-        donors_button.bind("<Button-1>", lambda e: "break")
-
         # Inicializar variables para los menús desplegables
         self.archivo_menu_frame = None
         self.ayuda_menu_frame = None
@@ -547,51 +529,7 @@ class ImageDownloaderApp(ctk.CTk):
             github_frame.bind("<Leave>", lambda e: on_leave(e, github_frame))
             github_label.bind("<Enter>", lambda e: on_enter(e, github_frame))
             github_label.bind("<Leave>", lambda e: on_leave(e, github_frame))
-            github_label.bind("<Button-1>", lambda e: webbrowser.open("https://github.com/emy69/CoomerDL"))
-
-        # Añadir el icono de Discord
-        self.discord_icon = self.load_discord_icon()
-        if self.discord_icon:
-            resized_discord_icon = self.discord_icon.resize((16, 16), Image.Resampling.LANCZOS)
-            resized_discord_icon = ctk.CTkImage(resized_discord_icon)
-            discord_frame = ctk.CTkFrame(self.menu_bar,cursor="hand2", fg_color="transparent", corner_radius=5)
-            discord_frame.pack(side="right", padx=5)
-            discord_label = ctk.CTkLabel(
-                discord_frame,
-                image=resized_discord_icon,
-                text="Discord",
-                compound="left"
-            )
-            discord_label.pack(padx=5, pady=5)
-            discord_frame.bind("<Enter>", lambda e: on_enter(e, discord_frame))
-            discord_frame.bind("<Leave>", lambda e: on_leave(e, discord_frame))
-            discord_label.bind("<Enter>", lambda e: on_enter(e, discord_frame))
-            discord_label.bind("<Leave>", lambda e: on_leave(e, discord_frame))
-            discord_label.bind("<Button-1>", lambda e: webbrowser.open("https://discord.gg/ku8gSPsesh"))
-
-        # Añadir un nuevo icono PNG
-        self.new_icon = self.load_patreon_icon()
-        if self.new_icon:
-            resized_new_icon = self.new_icon.resize((16, 16), Image.Resampling.LANCZOS)
-            resized_new_icon = ctk.CTkImage(resized_new_icon)
-            new_icon_frame = ctk.CTkFrame(self.menu_bar,cursor="hand2", fg_color="transparent", corner_radius=5)
-            new_icon_frame.pack(side="right", padx=5)
-            new_icon_label = ctk.CTkLabel(
-                new_icon_frame,
-                image=resized_new_icon,
-                text="Patreon",
-                compound="left"
-            )
-            new_icon_label.pack(padx=5, pady=5)
-            new_icon_frame.bind("<Enter>", lambda e: on_enter(e, new_icon_frame))
-            new_icon_frame.bind("<Leave>", lambda e: on_leave(e, new_icon_frame))
-            new_icon_label.bind("<Enter>", lambda e: on_enter(e, new_icon_frame))
-            new_icon_label.bind("<Leave>", lambda e: on_leave(e, new_icon_frame))
-            new_icon_label.bind("<Button-1>", lambda e: webbrowser.open("https://www.patreon.com/Emy69"))
-    
-    def show_donors_modal(self):
-        donors_modal = DonorsModal(self, self.tr)
-        donors_modal.focus_set()
+            github_label.bind("<Button-1>", lambda e: webbrowser.open("https://github.com/i0Ek3/CoomerDL-macOS"))
 
     def toggle_archivo_menu(self):
         if self.archivo_menu_frame and self.archivo_menu_frame.winfo_exists():
@@ -1133,8 +1071,8 @@ class ImageDownloaderApp(ctk.CTk):
           return (0, 0, 0) # Fallback for invalid format
 
     def check_for_new_version(self, startup_check=False):
-        repo_owner = "emy69"
-        repo_name = "CoomerDL"
+        repo_owner = "i0Ek3"
+        repo_name = "CoomerDL-macOS"
         github_api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
         
         try:
