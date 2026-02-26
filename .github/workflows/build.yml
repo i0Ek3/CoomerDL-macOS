@@ -45,20 +45,20 @@ jobs:
       - name: Create app icon
         run: |
           # Create ICNS file if it doesn't exist
-          if [ ! -f "resources/img/icono.icns" ]; then
-            mkdir -p resources/img/icono.iconset
-            sips -z 16 16 resources/img/icono.png --out resources/img/icono.iconset/icon_16x16.png 2>/dev/null || true
-            sips -z 32 32 resources/img/icono.png --out resources/img/icono.iconset/icon_16x16@2x.png 2>/dev/null || true
-            sips -z 32 32 resources/img/icono.png --out resources/img/icono.iconset/icon_32x32.png 2>/dev/null || true
-            sips -z 64 64 resources/img/icono.png --out resources/img/icono.iconset/icon_32x32@2x.png 2>/dev/null || true
-            sips -z 128 128 resources/img/icono.png --out resources/img/icono.iconset/icon_128x128.png 2>/dev/null || true
-            sips -z 256 256 resources/img/icono.png --out resources/img/icono.iconset/icon_128x128@2x.png 2>/dev/null || true
-            sips -z 256 256 resources/img/icono.png --out resources/img/icono.iconset/icon_256x256.png 2>/dev/null || true
-            sips -z 512 512 resources/img/icono.png --out resources/img/icono.iconset/icon_256x256@2x.png 2>/dev/null || true
-            sips -z 512 512 resources/img/icono.png --out resources/img/icono.iconset/icon_512x512.png 2>/dev/null || true
-            sips -z 1024 1024 resources/img/icono.png --out resources/img/icono.iconset/icon_512x512@2x.png 2>/dev/null || true
-            iconutil -c icns resources/img/icono.iconset -o resources/img/icono.icns 2>/dev/null || true
-            rm -rf resources/img/icono.iconset
+          if [ ! -f "CoomerDL.icns" ]; then
+            mkdir -p CoomerDL.iconset
+            sips -z 16 16 CoomerDL.png --out CoomerDL.iconset/icon_16x16.png 2>/dev/null || true
+            sips -z 32 32 CoomerDL.png --out CoomerDL.iconset/icon_16x16@2x.png 2>/dev/null || true
+            sips -z 32 32 CoomerDL.png --out CoomerDL.iconset/icon_32x32.png 2>/dev/null || true
+            sips -z 64 64 CoomerDL.png --out CoomerDL.iconset/icon_32x32@2x.png 2>/dev/null || true
+            sips -z 128 128 CoomerDL.png --out CoomerDL.iconset/icon_128x128.png 2>/dev/null || true
+            sips -z 256 256 CoomerDL.png --out CoomerDL.iconset/icon_128x128@2x.png 2>/dev/null || true
+            sips -z 256 256 CoomerDL.png --out CoomerDL.iconset/icon_256x256.png 2>/dev/null || true
+            sips -z 512 512 CoomerDL.png --out CoomerDL.iconset/icon_256x256@2x.png 2>/dev/null || true
+            sips -z 512 512 CoomerDL.png --out CoomerDL.iconset/icon_512x512.png 2>/dev/null || true
+            sips -z 1024 1024 CoomerDL.png --out CoomerDL.iconset/icon_512x512@2x.png 2>/dev/null || true
+            iconutil -c icns CoomerDL.iconset -o CoomerDL.icns 2>/dev/null || true
+            rm -rf CoomerDL.iconset
           fi
 
       - name: Build with PyInstaller
@@ -77,11 +77,11 @@ jobs:
             --volname "CoomerDL $VERSION Installer" \
             --window-size 800 400 \
             --icon-size 100 \
-            --icon "CoomerDL.app" 200 190 \
+            --icon "CoomerDL-macOS.app" 200 190 \
             --app-drop-link 600 185 \
-            --hide-extension "CoomerDL.app" \
+            --hide-extension "CoomerDL-macOS.app" \
             "dist/CoomerDL-$VERSION-macos.dmg" \
-            "dist/CoomerDL.app"
+            "dist/CoomerDL-macOS.app"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

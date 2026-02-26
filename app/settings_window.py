@@ -8,10 +8,11 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from PIL import Image as PilImage
 import requests
+from app.utils import get_resource_path
 
 
 class SettingsWindow:
-    CONFIG_PATH = 'resources/config/settings.json' 
+    CONFIG_PATH = get_resource_path('resources/config/settings.json')
 
     def __init__(self, parent, translate, load_translations_func, update_ui_texts_func, save_language_preference_func, version, downloader, check_for_new_version_func,on_settings_changed=None):
         self.parent = parent
@@ -57,7 +58,8 @@ class SettingsWindow:
     def load_icons(self):
         icons = {}
         try:
-            icons['folder'] = ImageTk.PhotoImage(PilImage.open("resources/img/iconos/settings/folder.png").resize((20, 20), PilImage.Resampling.LANCZOS))
+            path = get_resource_path("resources/img/iconos/settings/folder.png")
+            icons['folder'] = ImageTk.PhotoImage(PilImage.open(path).resize((20, 20), PilImage.Resampling.LANCZOS))
         except Exception as e:
             messagebox.showerror(self.translate("Error"), self.translate(f"Error loading icons: {e}"))
             icons['folder'] = None
@@ -200,7 +202,7 @@ class SettingsWindow:
         ]
 
         def cookie_path_for(site_key: str) -> str:
-            base = "resources/config/cookies"
+            base = get_resource_path("resources/config/cookies")
             os.makedirs(base, exist_ok=True)
             return os.path.join(base, f"{site_key}.json")
 

@@ -1,4 +1,4 @@
-# CoomerDL macOS Makefile
+# CoomerDL-macOS Makefile
 # Simplified build commands for macOS development
 
 .PHONY: help install build clean run test test-build version
@@ -31,7 +31,7 @@ install:
 # Build application
 build:
 	@echo "🔨 Building macOS application..."
-	./build_macos.sh
+	./build.sh
 
 # Clean build artifacts
 clean:

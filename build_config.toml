@@ -6,7 +6,7 @@
 app_name = "CoomerDL"
 version = "0.8.13"  # This should match version.py - build script will override
 main_script = "main.py"
-icon_file = "resources/img/icono.icns"
+icon_file = "CoomerDL.icns"
 
 [pyinstaller]
 # PyInstaller-specific settings

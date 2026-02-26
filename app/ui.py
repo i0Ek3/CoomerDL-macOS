@@ -4,6 +4,7 @@ import queue
 import sys
 import re
 import os
+from app.utils import get_resource_path
 import threading
 import tkinter as tk
 from pathlib import Path
@@ -65,6 +66,7 @@ class ImageDownloaderApp(ctk.CTk):
         ctk.set_default_color_theme("dark-blue")
         super().__init__()
         self.version = VERSION
+        #self.translations = {}
         self.title(f"CoomerDL-macOS [{VERSION}]")
         
         # Setup window
@@ -152,10 +154,10 @@ class ImageDownloaderApp(ctk.CTk):
 
         # Cargar iconos redimensionados
         self.icons = {
-            'image': self.load_and_resize_image('resources/img/iconos/ui/image_icon.png', (40, 40)),
-            'video': self.load_and_resize_image('resources/img/iconos/ui/video.png', (40, 40)),
-            'zip': self.load_and_resize_image('resources/img/iconos/ui/file-zip.png', (40, 40)),
-            'default': self.load_and_resize_image('resources/img/iconos/ui/default_icon.png', (40, 40))
+            'image': self.load_and_resize_image(get_resource_path('resources/img/iconos/ui/image_icon.png'), (40, 40)),
+            'video': self.load_and_resize_image(get_resource_path('resources/img/iconos/ui/video.png'), (40, 40)),
+            'zip': self.load_and_resize_image(get_resource_path('resources/img/iconos/ui/file-zip.png'), (40, 40)),
+            'default': self.load_and_resize_image(get_resource_path('resources/img/iconos/ui/default_icon.png'), (40, 40))
         }
 
         # Progress manager
@@ -197,14 +199,14 @@ class ImageDownloaderApp(ctk.CTk):
     # Save and load language preferences
     def save_language_preference(self, language_code):
         config = {'language': language_code}
-        with open('resources/config/languages/save_language/language_config.json', 'w') as config_file:
+        with open(get_resource_path('resources/config/languages/save_language/language_config.json'), 'w') as config_file:
             json.dump(config, config_file)
         self.load_translations(language_code)
         self.update_ui_texts()
     
     def load_language_preference(self):
         try:
-            with open('resources/config/languages/save_language/language_config.json', 'r') as config_file:
+            with open(get_resource_path('resources/config/languages/save_language/language_config.json'), 'r') as config_file:
                 config = json.load(config_file)
                 return config.get('language', 'en')
         except FileNotFoundError:
@@ -212,7 +214,8 @@ class ImageDownloaderApp(ctk.CTk):
 
     # Load translations
     def load_translations(self, lang):
-        path = "resources/config/languages/translations.json"
+        path = get_resource_path(os.path.join('resources', 'config', 'languages', 'translations.json'))
+        
         with open(path, 'r', encoding='utf-8') as file:
             all_translations = json.load(file)
             self.translations = {key: value.get(lang, key) for key, value in all_translations.items()}
@@ -280,7 +283,7 @@ class ImageDownloaderApp(ctk.CTk):
         # Set app icon for macOS
         if sys.platform == "darwin":
             try:
-                self.iconphoto(True, tk.PhotoImage(file="resources/img/icono.png"))
+                self.iconphoto(True, tk.PhotoImage(file="CoomerDL.png"))
             except:
                 pass  # Continue without icon if file not found
 
@@ -384,7 +387,7 @@ class ImageDownloaderApp(ctk.CTk):
         self.progress_percentage.pack(side='left')
 
         # Cargar el icono de descarga con un tamaño mayor
-        self.download_icon = self.load_and_resize_image('resources/img/iconos/ui/download_icon.png', (24, 24))  # Cambiado a (24, 24)
+        self.download_icon = self.load_and_resize_image(get_resource_path('resources/img/iconos/ui/download_icon.png'), (24, 24))  # Cambiado a (24, 24)
 
         # Reemplazar el botón con una etiqueta que simule un botón
         self.toggle_details_button = ctk.CTkLabel(self.progress_frame, image=self.download_icon, text="", cursor="hand2")
@@ -885,7 +888,7 @@ class ImageDownloaderApp(ctk.CTk):
 
     # Export logs to a file
     def export_logs(self):
-        log_folder = "resources/config/logs/"
+        log_folder = get_resource_path("resources/config/logs/")
         Path(log_folder).mkdir(parents=True, exist_ok=True)
         log_file_path = Path(log_folder) / f"log_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         try:
@@ -995,11 +998,11 @@ class ImageDownloaderApp(ctk.CTk):
     # Save and load download folder
     def save_download_folder(self, folder_path):
         config = {'download_folder': folder_path}
-        with open('resources/config/download_path/download_folder.json', 'w') as config_file:
+        with open(get_resource_path('resources/config/download_path/download_folder.json'), 'w') as config_file:
             json.dump(config, config_file)
 
     def load_download_folder(self):
-        config_path = 'resources/config/download_path/download_folder.json'
+        config_path = get_resource_path('resources/config/download_path/download_folder.json')
         config_dir = Path(config_path).parent
         if not config_dir.exists():
             config_dir.mkdir(parents=True)
@@ -1055,13 +1058,13 @@ class ImageDownloaderApp(ctk.CTk):
 
     # Uso de la función genérica para cargar íconos específicos
     def load_github_icon(self):
-        return self.load_icon("resources/img/iconos/ui/social/github-logo-24.png", "GitHub")
+        return self.load_icon(get_resource_path("resources/img/iconos/ui/social/github-logo-24.png"), "GitHub")
 
     def load_discord_icon(self):
-        return self.load_icon("resources/img/iconos/ui/social/discord-alt-logo-24.png", "Discord")
+        return self.load_icon(get_resource_path("resources/img/iconos/ui/social/discord-alt-logo-24.png"), "Discord")
 
     def load_patreon_icon(self):
-        return self.load_icon("resources/img/iconos/ui/social/patreon-logo-24.png", "New Icon")
+        return self.load_icon(get_resource_path("resources/img/iconos/ui/social/patreon-logo-24.png"), "New Icon")
 
     def parse_version_string(self, version_str):
       # Removes 'V' prefix and splits by '.'
